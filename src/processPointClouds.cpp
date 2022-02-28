@@ -4,8 +4,7 @@
 #include <unordered_set>
 
 #include "../src/quiz/ransac/ransacplane.h"
-#include "../src/quiz/cluster/clusterhelp.h"
-//#include "../src/quiz/cluster/kdtree.h"
+#include "../src/quiz/cluster/clusterhelp.cpp"
 
 using namespace std;
 
@@ -185,12 +184,12 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
         }
 
         // Obtain the clusters from the tree
-        std::vector<std::vector<int>> treeClusters = euclideanCluster(points, tree, clusterTolerance);
+        const std::vector<std::vector<int>> treeClusters = euclideanCluster(points, tree, clusterTolerance);
 
         // Loop through the tree and find all the points within our distance threshold
         for (std::vector<int> clusterIDs:treeClusters)
         {
-            // Grab points between the min size and max size
+            // Grab clusters within our min and max range
             if ((clusterIDs.size() >= minSize) && (clusterIDs.size() <= maxSize))
             {
                 typename pcl::PointCloud<PointT>::Ptr cloudCluster (new pcl::PointCloud<PointT>);

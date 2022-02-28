@@ -45,15 +45,15 @@ void demoCode(pcl::visualization::PCLVisualizer::Ptr &viewer)
     pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloud = pointProcessorI.loadPcd("../src/sensors/data/pcd/data_1/0000000000.pcd");
 
     // Call the filter function to downsample the huge pcd file
-    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI.FilterCloud(inputCloud, 0.25, 
-                                                    Eigen::Vector4f(-22,-6,-3,1.0), Eigen::Vector4f(25,6.5,3,1.0));
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI.FilterCloud(inputCloud, 0.3, 
+                                                    Eigen::Vector4f(-22,-6,-3.5,1.0), Eigen::Vector4f(25,6.5,3,1.0));
     // render the pcd file
     renderPointCloud(viewer, filtData, "Filtered Cloud Data");
 
-    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI.SegmentPlane(filtData,30,0.35,false);
-    renderPointCloud(viewer,cloudSegment.first,"ObjCloud",Color(1,0,0));
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI.SegmentPlane(filtData,30,0.3,false);
+    renderPointCloud(viewer,cloudSegment.first,"ObjCloud",Color(1,1,1));
 
-    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI.Clustering(cloudSegment.first, 0.5, 20, 1000, false);
+    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI.Clustering(cloudSegment.first, 0.2, 20, 350, false);
     int clusterId;
 
     // Define colors for each cluster
@@ -78,16 +78,16 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     // ----------------------------------------------------
 
     // Call the filter function to downsample the huge pcd file
-    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI->FilterCloud(inputCloud, 0.25, 
-                                                    Eigen::Vector4f(-22,-6,-3,1.0), Eigen::Vector4f(25,6.5,3,1.0));
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI->FilterCloud(inputCloud, 0.2, 
+                                                    Eigen::Vector4f(-22,-6,-3.5,1.0), Eigen::Vector4f(25,6.5,3,1.0));
     // render the pcd file
     renderPointCloud(viewer, filtData, "Filtered Cloud Data");
 
     // Segment object plane vs road plane
-    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI->SegmentPlane(filtData,30,0.35,true);
-    renderPointCloud(viewer,cloudSegment.first,"ObjCloud",Color(0,1,0));
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI->SegmentPlane(filtData,25,0.2,false);
+    renderPointCloud(viewer,cloudSegment.first,"ObjCloud",Color(1,1,1));
 
-    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(cloudSegment.first, 0.5, 20, 1000, true);
+    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(cloudSegment.first, 0.2, 10, 250, false);
     int clusterId;
 
     // Define colors for each cluster
