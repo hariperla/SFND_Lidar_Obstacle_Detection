@@ -104,11 +104,15 @@ The workspace provided in the SFND classroom comes preinstallated with everythin
 
 8. In the CmakeLists.txt file as shown in Step 2 of Ubuntu installation, please add the following if you run into Qt5
    dependency issues
+   ```cmake
    set(CMAKE_PREFIX_PATH "/opt/homebrew/opt/qt@5/") after the "set(CMAKE_CXX)" section
+   ```
    Path may change for qt5 based on your installation
 
 9. I also modified the PCL version to what was installed on my machine from homebrew. Below is the modified entry
+   ```cmake
    find_package(PCL 1.2 REQUIRED)
+   ```
 
 8. Execute the following commands in a terminal
 
