@@ -41,16 +41,16 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     // ----------------------------------------------------
 
     // Call the filter function to downsample the huge pcd file
-    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI->FilterCloud(inputCloud, 0.3, 
-                                                    Eigen::Vector4f(-22,-6,-3.5,1.0), Eigen::Vector4f(25,6.5,3,1.0));
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI->FilterCloud(inputCloud, 0.25, 
+                                                    Eigen::Vector4f(-20,-6,-4.5,1.0), Eigen::Vector4f(30,7,4.5,1.0));
     // render the pcd file
     renderPointCloud(viewer, filtData, "Filtered Cloud Data");
 
     // Segment object plane vs road plane
-    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI->SegmentPlane(filtData,40,0.3,false);
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI->SegmentPlane(filtData,100,0.25,false);
     renderPointCloud(viewer,cloudSegment.first,"ObjCloud",Color(1,1,1));
 
-    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(cloudSegment.first, 0.5, 50, 450, false);
+    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(cloudSegment.first, 0.4, 18, 450, false);
     int clusterId;
 
     // Define colors for each cluster
@@ -59,7 +59,7 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     {
         cout << "Cluster size";
         pointProcessorI->numPoints(cluster);
-        renderPointCloud(viewer, cluster, "ClusterCloud" + to_string(clusterId), colors[clusterId]);
+        renderPointCloud(viewer, cluster, "ClusterCloud" + to_string(clusterId), colors[clusterId%3]);
         // Add a bounding box
         Box box = pointProcessorI->BoundingBox(cluster);
         //BoxQ box = pointProcessorI.RotatingBoundingBox(cluster);
