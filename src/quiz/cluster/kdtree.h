@@ -47,7 +47,8 @@ struct KdTree
 		}
 		else
 		{
-			unsigned rem = depth % 2; // To traverse through the left and right of the tree of a 2d tree
+			unsigned dims = point.size(); // Get the dimensions of the point. 2d or 3d point
+			unsigned rem = depth % dims; // To traverse through the left and right of the tree of a 2d tree
 			
 			// If curr point less than the point in the node insert left else insert right
 			if (point[rem] < node->point[rem])
@@ -74,14 +75,26 @@ struct KdTree
 	{
 		if (node != nullptr)
 		{
-			// Check if we are with in a bounding box first on both x and y direction
-			if ( node->point[0] >= (target[0] - distanceTol) && node->point[0] <= (target[0] + distanceTol) && 
-				node->point[1] >= (target[0] - distanceTol) && node->point[0] <= (target[0] + distanceTol) )
+			unsigned dims = target.size(); // Understand if we are searching in a 2d or a 3d tree
+			unsigned rem = depth%dims;
+
+			bool boundingBoxCheck = true;
+			// Check if we are with in a bounding box first on x, y & z direction
+			for (int i = 0; i < dims; i++)
+			{
+				boundingBoxCheck &= (std::abs(node->point[i] - target[i]) <=  distanceTol) ;
+			}
+			// If we are within bounding box, calculate the distance and search through the tree
+			if (boundingBoxCheck)
 				{
+					float tempDist = 0.0;
 					// Calculate distance
-					float dist = sqrt((node->point[0] - target[0]) * (node->point[0] - target[0]) + 
-									  (node->point[1] - target[1]) * (node->point[1] - target[1]));
-					
+					for (int j = 0; j < dims; j++)
+					{
+						tempDist += std::pow((node->point[j] - target[j]),2);
+					} 
+					float dist = sqrt(tempDist);
+					// If the distance is less than our tolerance, get all the node ID's
 					if (dist <= distanceTol)
 					{
 						ids.push_back(node->id);
@@ -89,11 +102,11 @@ struct KdTree
 				}
 			
 			// Check box boundary and traverse left or right
-			if ((target[depth%2] - distanceTol) < node->point[depth%2])
+			if ((target[rem] - distanceTol) < node->point[rem])
 			{
 				searchHelp(node->left, target, depth+1, distanceTol, ids);
 			}
-			if ((target[depth%2] + distanceTol) > node->point[depth%2])
+			if ((target[rem] + distanceTol) > node->point[rem])
 			{
 				searchHelp(node->right, target, depth+1, distanceTol, ids);
 			}

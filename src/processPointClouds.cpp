@@ -186,6 +186,10 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
         // Obtain the clusters from the tree
         const std::vector<std::vector<int>> treeClusters = euclideanCluster(points, tree, clusterTolerance);
 
+        // Free up the tree since we no longer need it. This helps with memory management
+        delete tree;
+        tree = nullptr;
+
         // Loop through the tree and find all the points within our distance threshold
         for (std::vector<int> clusterIDs:treeClusters)
         {
