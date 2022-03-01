@@ -1,6 +1,6 @@
 # Sensor Fusion Self-Driving Car Course
 
-<img src="media/ObstacleDetectionFPS.gif" width="700" height="400" />
+<img src="media/obstacleDetection_SFND_FPS.gif" width="960" height="648" />
 
 ### Welcome to the Sensor Fusion course for self-driving cars.
 
@@ -101,6 +101,14 @@ The workspace provided in the SFND classroom comes preinstallated with everythin
    ```
 
 7. Edit the CMakeLists.txt file as shown in Step 2 of Ubuntu installation instructions above.
+
+8. In the CmakeLists.txt file as shown in Step 2 of Ubuntu installation, please add the following if you run into Qt5
+   dependency issues
+   set(CMAKE_PREFIX_PATH "/opt/homebrew/opt/qt@5/") after the "set(CMAKE_CXX)" section
+   Path may change for qt5 based on your installation
+
+9. I also modified the PCL version to what was installed on my machine from homebrew. Below is the modified entry
+   find_package(PCL 1.2 REQUIRED)
 
 8. Execute the following commands in a terminal
 
