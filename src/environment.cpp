@@ -41,20 +41,20 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     // ----------------------------------------------------
 
     // Call the filter function to downsample the huge pcd file
-    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI->FilterCloud(inputCloud, 0.2, 
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filtData = pointProcessorI->FilterCloud(inputCloud, 0.3, 
                                                     Eigen::Vector4f(-22,-6,-3.5,1.0), Eigen::Vector4f(25,6.5,3,1.0));
     // render the pcd file
     renderPointCloud(viewer, filtData, "Filtered Cloud Data");
 
     // Segment object plane vs road plane
-    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI->SegmentPlane(filtData,40,0.25,false);
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudSegment = pointProcessorI->SegmentPlane(filtData,40,0.3,false);
     renderPointCloud(viewer,cloudSegment.first,"ObjCloud",Color(1,1,1));
 
-    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(cloudSegment.first, 0.4, 35, 450, false);
+    vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(cloudSegment.first, 0.5, 50, 450, false);
     int clusterId;
 
     // Define colors for each cluster
-    vector<Color> colors = {Color(1, 1, 0), Color(0, 1, 1), Color(1, 0, 1)};
+    vector<Color> colors = {Color(1, 1, 0), Color(0, 1, 0), Color(0, 0, 1)};
     for (pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : cloudClusters)
     {
         cout << "Cluster size";
@@ -111,8 +111,8 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
         renderBox(viewer, box, clusterId);
         ++clusterId;
     }
-}
- */
+} */
+
 // setAngle: SWITCH CAMERA ANGLE {XY, TopDown, Side, FPS}
 void initCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr &viewer)
 {
