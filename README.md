@@ -1,6 +1,6 @@
 # Sensor Fusion Self-Driving Car Course
 
-<img src="media/obstacleDetection_SFND_XY2.gif" width="960" height="648" />
+<img src="media/obstacleDetection_SFND_XY3.gif" width="960" height="648" />
 
 ### Welcome to the Sensor Fusion course for self-driving cars.
 
